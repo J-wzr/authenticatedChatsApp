@@ -1,2 +1,2 @@
 # authenticatedChatsApp
-django authentication and chat system
+django admin replies and user conversations
