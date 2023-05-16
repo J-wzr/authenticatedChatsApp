@@ -1,0 +1,65 @@
+{% extends 'users/base.html' %}
+{% block content %}
+    <div class="card text-primary px-3 sticky-top" style="margin:auto; width:50%">
+     <marquee direction= "up" scrollamount="1" width="80%" height="80px">
+      currently-logged-in user: <span class="text-danger">{{user.username}}</span>,
+      email:  <span class="text-danger">{{user.email}}</span>,
+      user id:  <span class="text-danger">{{user.id}}</span></marquee>
+    </div>
+<h2 class="text-success">chats before</h3>
+
+<section style="background-color: #eee;">
+    <div class="container py-5">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-6">
+          <div class="card" id="chat2">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">Me, {{user.username}} and Admin communications</h5>
+              <button type="button" class="btn btn-primary btn-sm" data-mdb-ripple-color="dark">Talk to us below</button>
+            </div>
+            <div class="card-body" data-mdb-perfect-scrollbar="true" style="position: relative; height:auto">
+              {% for myMessage in sent_messages %}
+                {% if myMessage %}
+                <div class="container-fluid" style="margin-right: 30px">
+                    <div class="d-flex flex-row justify-content-start">
+                      <button class='bg-dark text-warning rounded-3'>{{myMessage.sender.username}}'s message</button>
+                    </div>
+                    <div class="d-grid gap-3">
+                      <button type="button" class="py-3 btn btn-dark"  style="font-size: 1.4rem;">{{myMessage.message}}</button>
+                    </div>
+                </div>
+                {% for message in received_messages %}
+                  {% if message %}
+                    <div class="container-fluid mt-2" style="margin-left: 30px">
+                      <div class="d-flex flex-row justify-content-end">
+                        <button class='bg-dark text-warning rounded-3'>{{message.recipient.username}}'s message</button>
+                      </div>
+                      <div class="d-grid gap-3">
+                        <button type="button" class="p-3 btn btn-primary btn-block" style="font-size: 1.5rem;">{{message}}</button>
+                      </div>
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                  <hr> 
+                {% endif %}
+              {% endfor %} 
+            </div>
+          </div>
+          <div class="container bg-success" style="height: 120px; border-radius: 10px">
+            {% if user.is_authenticated %}
+            <form method="post">
+                {% csrf_token %}
+                <label for="message">Message:</label>
+                <textarea name="message" id="message"></textarea>
+                <input type="submit" value="Send Message">
+                {{form}}
+            </form>
+            {% else %}
+            <p>You need to be logged in to send a message.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

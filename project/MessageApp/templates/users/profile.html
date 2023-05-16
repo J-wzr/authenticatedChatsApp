@@ -1,0 +1,10 @@
+
+{% extends 'users/base.html' %}
+
+{% block content %}
+    <div class="container p-1 text-primary">
+        <p>logged in user:👉 {{user.username}}</p>
+        <p>email:👉  {{user.email}}</p>
+        <p>user id:👉  {{user.id}}</p>
+    </div>
+{% endblock %}
