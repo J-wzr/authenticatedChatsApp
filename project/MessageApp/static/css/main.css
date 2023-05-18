@@ -1,0 +1,30 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    width: 70%;
+    margin: auto !important;
+    height: 100vh !important;
+    overflow: scroll;
+}
+button, .btn, .more{
+    background-color: #fd5e14;
+}
+.sender{
+    position: relative;
+    background-color: bisque;
+}
+.sender span:first-child{
+    
+}
+.sender span:nth-child(2){
+}
+nav a{
+    color: #fff;
+    font-size: 20px;
+}
+nav img{
+    width: 150px;
+    height: 70px;
+}

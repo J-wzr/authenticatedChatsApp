@@ -2,20 +2,15 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
-from .models import PrivateMessage
-from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-
 from .forms import UserRegisterForm, MessageForm
 from .models import PrivateMessage
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 
 def home(request):
-    return render(request, 'users/index.html')
+    return render(request, 'users/index.html' )
 
 def register(request):
     if request.method == "POST":
@@ -36,9 +31,21 @@ def profile(request):
     return render(request, 'users/profile.html')
 
 def view_messages(request):
-    sent_messages = PrivateMessage.objects.filter(sender = request.user)
-    # check if the user is logged in and if they are the admin
-    if request.user.is_authenticated:
-        received_messages = PrivateMessage.objects.filter(recipient=request.user)
-        return render(request, 'users/view_messages.html', {'received_messages': received_messages, 'sent_messages':sent_messages})
-    return redirect('home')
+    user = request.user
+    if user.is_superuser:
+        messages = PrivateMessage.objects.all()
+    else:
+        messages = PrivateMessage.objects.filter(Q(sender=user) | Q(recipient=user)).order_by('-time')[0:2]
+    if request.method == "POST":
+        mform = MessageForm(request.POST)
+        if mform.is_valid():
+            receiver = mform.cleaned_data.get("recipient")
+            mform.save()
+            
+        else:
+            messages.MessageFailure(request, "Oops!.. sth went wrong. Try send again")
+    else:
+        mform = MessageForm() 
+    return render(request, 'users/view_messages.html', {"messages": messages,"mform":mform,})
+
+

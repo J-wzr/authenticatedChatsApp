@@ -2,9 +2,12 @@
 {% extends 'users/base.html' %}
 
 {% block content %}
-    <div class="container p-1 text-primary">
-        <p>logged in user:👉 {{user.username}}</p>
-        <p>email:👉  {{user.email}}</p>
-        <p>user id:👉  {{user.id}}</p>
-    </div>
+    <div class="card" style="width:400px; margin: auto">
+        <img class="card-img-top" src="img_avatar1.png" alt="Card image">
+        <div class="card-body">
+          <h4 class="card-title">{{user.username}}</h4>
+          <p class="card-text">{{user.email}}</p>
+          <a href="{% url "view_messages" %}" class="btn btn-primary">Go to chats</a>
+        </div>
+      </div>
 {% endblock %}
