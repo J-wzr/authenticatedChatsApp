@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .models import PrivateMessage
 from django.forms import ModelForm
+from django_select2.forms import ModelSelect2Widget
 
 
 class UserRegisterForm(UserCreationForm):
@@ -15,5 +16,7 @@ class UserRegisterForm(UserCreationForm):
 class MessageForm(ModelForm):
     class Meta:
         model = PrivateMessage
-        fields = ['sender','recipient','message']
+        fields = ['recipient','message']
         # exclude = ('time',)
+    def label_from_instance(self, obj):
+        return obj.username

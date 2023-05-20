@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'MessageApp',
     'crispy_forms',
     'crispy_bootstrap5',
+    'django_select2',
 ]
 
 MIDDLEWARE = [

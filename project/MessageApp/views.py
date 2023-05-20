@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
 
 # Create your views here.
 from django.shortcuts import render, redirect
@@ -39,13 +40,15 @@ def view_messages(request):
     if request.method == "POST":
         mform = MessageForm(request.POST)
         if mform.is_valid():
-            receiver = mform.cleaned_data.get("recipient")
-            mform.save()
+            instance = mform.save(commit=False)
+            instance.sender = request.user
+            instance.save()
             
         else:
             messages.MessageFailure(request, "Oops!.. sth went wrong. Try send again")
     else:
         mform = MessageForm() 
+        mform.fields['recipient'].queryset = User.objects.exclude(username=user.username)
     return render(request, 'users/view_messages.html', {"messages": messages,"mform":mform,})
 
 
